@@ -19,10 +19,11 @@ public class MatrixDriver {
         
         transpose.printMatrix();
 
-        Matrix sum = matrix.addMatrix( matrix );
+        Matrix sum = matrix.addMatrices( matrix );
         
         sum.printMatrix();
         
     }
+    
 
 }
