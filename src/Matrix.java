@@ -54,6 +54,32 @@ public class Matrix {
         
     }
     
+    /**
+     * Add two matrices together. Return null if dimensions
+     * do not match.
+     * 
+     * @param other matrix to add to current matrix
+     * @return the matrix A + B
+     */
+    public Matrix addMatrix( Matrix other ) {
+        
+        Matrix sum = new Matrix( m, n );
+        
+        if ( m == other.getM() && n == other.getN() ) {
+            for ( int i = 0; i < m; i++ ) {
+                for ( int j = 0; j < n; j++ ) {                   
+                    int entry = getEntry( i, j ) + other.getEntry( i, j ); 
+                    sum.addEntry(j, i, entry);
+                }
+            }
+        } else {
+            sum = null;
+        }
+        
+        return sum;
+        
+    }
+    
     
     
 }
