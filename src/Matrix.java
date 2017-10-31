@@ -1,4 +1,9 @@
-
+/**
+ * Class to represent a matrix as a 2d array.
+ * 
+ * @author Brendan Armani, Andrew Levy, Andrew Tomassone
+ * @version 1.0
+ */
 public class Matrix {
 
     private int m;
@@ -19,45 +24,8 @@ public class Matrix {
             matrix = new int[m][n];
         }
         
-    }
-    
-    /**
-     * Return the transpose of the current matrix.
-     * 
-     * @return the transposed matrix
-     */
-    public Matrix transpose() {
-        
-        Matrix transpose = new Matrix( m, n );
-        
-        for ( int i = 0; i < m; i++ ) {
-            for ( int j = 0; j < n; j++ ) {
-                transpose.addEntry( i, j, matrix[j][i] );
-            }
-        }
-        
-        return transpose;       
-        
-    }
-    
-    /**
-     * Get the number of rows of the current matrix.
-     * 
-     * @return number of rows
-     */
-    public int getM() {
-        return m;
-    }
-    
-    /**
-     * Get the number of columns of the current matrix.
-     * 
-     * @return number of columns
-     */
-    public int getN() {
-        return n;
-    }
-    
+    }  
+ 
     /**
      * Add an entry at a specific spot in the matrix.
      * 
@@ -80,45 +48,7 @@ public class Matrix {
         return isAdded;
         
     }
-    
-    /**
-     * Return the entry at the desired spot.
-     * 
-     * @param m the row
-     * @param n the column
-     * @return Integer.MIN_VALUE if an invalid spot, otherwise
-     * the entry at the given dimensions
-     */
-    public int getEntry( int m, int n ) {
-        
-        int entry;
-        
-        try {
-            entry = matrix[m][n];
-        } catch ( ArrayIndexOutOfBoundsException e ) {
-            entry = Integer.MIN_VALUE;
-        }
-        
-        return entry;
-        
-    }
-    
-    /**
-     * Print the contents of the matrix to the console.
-     */
-    public void printMatrix() {
-        
-        for ( int i = 0; i < m; i++ ) {
-            System.out.println();
-            for ( int j = 0; j < n; j++ ) {
-                System.out.print( matrix[i][j] + " ");
-            }
-        }
-        
-        System.out.println();
-        
-    }
-    
+
     /**
      * Add two matrices together. Return null if dimensions
      * do not match.
@@ -130,7 +60,7 @@ public class Matrix {
         
         Matrix sum = new Matrix( m, n );
         
-        if ( m == other.getM() && n == other.getN() ) {
+        if ( sameDimensions( other ) ) {
             for ( int i = 0; i < m; i++ ) {
                 for ( int j = 0; j < n; j++ ) {                   
                     int entry = getEntry( i, j ) + other.getEntry( i, j ); 
@@ -173,6 +103,63 @@ public class Matrix {
         
     }
     
+    /**
+     * Return the entry at the desired spot.
+     * 
+     * @param m the row
+     * @param n the column
+     * @return Integer.MIN_VALUE if an invalid spot, otherwise
+     * the entry at the given dimensions
+     */
+    public int getEntry( int m, int n ) {
+        
+        int entry;
+        
+        try {
+            entry = matrix[m][n];
+        } catch ( ArrayIndexOutOfBoundsException e ) {
+            entry = Integer.MIN_VALUE;
+        }
+        
+        return entry;
+        
+    }
+    
+    /**
+     * Get the number of rows of the current matrix.
+     * 
+     * @return number of rows
+     */
+    public int getM() {
+        return m;
+    }
+    
+    /**
+     * Get the number of columns of the current matrix.
+     * 
+     * @return number of columns
+     */
+    public int getN() {
+        return n;
+    }
+    
+    
+    /**
+     * Print the contents of the matrix to the console.
+     */
+    public void printMatrix() {
+        
+        for ( int i = 0; i < m; i++ ) {
+            System.out.println();
+            for ( int j = 0; j < n; j++ ) {
+                System.out.print( matrix[i][j] + " ");
+            }
+        }
+        
+        System.out.println();
+        
+    }
+    
     
     /**
      * Subtract two matrices. Return null if dimensions
@@ -203,6 +190,27 @@ public class Matrix {
     }
     
     /**
+     * Return the transpose of the current matrix.
+     * 
+     * @return the transposed matrix
+     */
+    public Matrix transpose() {
+        
+        Matrix transpose = new Matrix( m, n );
+        
+        for ( int i = 0; i < m; i++ ) {
+            for ( int j = 0; j < n; j++ ) {
+                transpose.addEntry( i, j, matrix[j][i] );
+            }
+        }
+        
+        return transpose;       
+        
+    }
+    
+    /********************* private methods ******************/
+    
+    /**
      * Return whether the matrices have the same dimensions.
      * 
      * @param other matrix to compare with
@@ -211,6 +219,5 @@ public class Matrix {
     private boolean sameDimensions( Matrix other ) {
         return m == other.getM() && n == other.getN();
     }
-    
     
 }
