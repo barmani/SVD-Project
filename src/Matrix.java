@@ -5,12 +5,27 @@ public class Matrix {
     private int n;
     private int[][] matrix;
     
-    public Matrix( int n, int m ) {
-        this.n = n;
-        this.m = m;
-        matrix = new int[m][n];
+    /**
+     * Construct an mxn matrix
+     * 
+     * @param m number of columns
+     * @param n number of rows
+     */
+    public Matrix( int m, int n ) {
+        
+        if ( m > 0 && n > 0 ) {
+            this.m = m;
+            this.n = n;
+            matrix = new int[m][n];
+        }
+        
     }
     
+    /**
+     * Return the transpose of the current matrix.
+     * 
+     * @return the transposed matrix
+     */
     public Matrix transpose() {
         
         Matrix transpose = new Matrix( m, n );
@@ -25,22 +40,72 @@ public class Matrix {
         
     }
     
+    /**
+     * Get the number of rows of the current matrix.
+     * 
+     * @return number of rows
+     */
     public int getM() {
         return m;
     }
     
+    /**
+     * Get the number of columns of the current matrix.
+     * 
+     * @return number of columns
+     */
     public int getN() {
         return n;
     }
     
-    public void addEntry( int m, int n, int entry ) {
-        matrix[m][n] = entry;
+    /**
+     * Add an entry at a specific spot in the matrix.
+     * 
+     * @param m the row
+     * @param n the column
+     * @param entry number to add
+     * @return if the entry was added successfully
+     */
+    public boolean addEntry( int m, int n, int entry ) {
+        
+        boolean isAdded = false;
+        
+        try {
+            matrix[m][n] = entry;
+            isAdded = true;
+        } catch ( ArrayIndexOutOfBoundsException e ) {
+
+        }
+        
+        return isAdded;
+        
     }
     
+    /**
+     * Return the entry at the desired spot.
+     * 
+     * @param m the row
+     * @param n the column
+     * @return Integer.MIN_VALUE if an invalid spot, otherwise
+     * the entry at the given dimensions
+     */
     public int getEntry( int m, int n ) {
-        return matrix[m][n];
+        
+        int entry;
+        
+        try {
+            entry = matrix[m][n];
+        } catch ( ArrayIndexOutOfBoundsException e ) {
+            entry = Integer.MIN_VALUE;
+        }
+        
+        return entry;
+        
     }
     
+    /**
+     * Print the contents of the matrix to the console.
+     */
     public void printMatrix() {
         
         for ( int i = 0; i < m; i++ ) {
@@ -89,7 +154,23 @@ public class Matrix {
      * @return whether they are equal
      */
     public boolean equals( Matrix other ) {
-        return false;
+        
+        boolean isEqual = true;
+        
+        if ( !sameDimensions( other ) ) {
+            isEqual = false;
+        } else {
+            for ( int i = 0; i < m; i++ ) {
+                for ( int j = 0; j < n; j++ ) {
+                    if ( getEntry( i, j ) != other.getEntry( i, j ) ) {
+                        isEqual = false;
+                    }
+                }
+            }
+        }
+
+        return isEqual;
+        
     }
     
     
@@ -130,9 +211,6 @@ public class Matrix {
     private boolean sameDimensions( Matrix other ) {
         return m == other.getM() && n == other.getN();
     }
-    
-    
-    
     
     
 }
