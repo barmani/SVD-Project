@@ -1,3 +1,5 @@
+import Jama.Matrix;
+import Jama.SingularValueDecomposition;
 
 public class MatrixDriver {
 
@@ -5,23 +7,24 @@ public class MatrixDriver {
        
         Matrix matrix = new Matrix(3, 3);
         
-        for ( int i = 0; i < 3; i++ ) {
-            int entry = 1;
-            for ( int j = 0; j < 3; j++ ) {
-                matrix.addEntry(i, j, entry);
-                entry++;
-            }
-        }
+        matrix.set(0,0,57);
+        matrix.set(0,1,44);
+        matrix.set(0,2,55);
+        matrix.set(1,0,33);
+        matrix.set(1,1,3);
+        matrix.set(1,2,4);
+        matrix.set(2,0,8);
+        matrix.set(2,1,55);
+        matrix.set(2,2,5);
         
-        matrix.printMatrix();
         
-        Matrix transpose = matrix.transpose();
-        
-        transpose.printMatrix();
-
-        Matrix sum = matrix.addMatrices( matrix );
-        
-        sum.printMatrix();
+        SingularValueDecomposition svd = new SingularValueDecomposition( matrix );
+        Matrix U = svd.getU();
+        Matrix S = svd.getS();
+        Matrix V = svd.getV();
+        U.print(3, 5);
+        S.print(3, 5);
+        V.print(3, 5);
         
     }
     
