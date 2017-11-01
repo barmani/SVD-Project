@@ -1,7 +1,7 @@
 /**
  * Class to represent a matrix as a 2d array.
  * 
- * @author Brendan Armani, Andrew Levy, Andrew Tomassone
+ * @author Brendan Armani,   Andrew Levy, Andrew Tomassone
  * @version 1.0
  */
 public class Matrix {
