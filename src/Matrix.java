@@ -143,6 +143,27 @@ public class Matrix {
         return n;
     }
     
+    /**
+     * Multiply matrix a by matrix b.
+     * 
+     * @return the product
+     */
+    public Matrix multiply(Matrix b) {
+     
+
+        Matrix c = new Matrix(m,n);
+        
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < b.getN(); j++) {
+                for (int k = 0; k < n; k++) {
+                    c.addEntry(i,j, c.getEntry(i,j) + getEntry(i,k) * b.getEntry(k,j));
+                    
+                }
+            }
+        }
+        
+        return c;
+    }
     
     /**
      * Print the contents of the matrix to the console.
