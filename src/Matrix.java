@@ -8,7 +8,7 @@ public class Matrix {
 
     private int m;
     private int n;
-    private int[][] matrix;
+    private double[][] matrix;
     
     /**
      * Construct an mxn matrix
@@ -21,7 +21,7 @@ public class Matrix {
         if ( m > 0 && n > 0 ) {
             this.m = m;
             this.n = n;
-            matrix = new int[m][n];
+            matrix = new double[m][n];
         }
         
     }  
@@ -34,7 +34,7 @@ public class Matrix {
      * @param entry number to add
      * @return if the entry was added successfully
      */
-    public boolean addEntry( int m, int n, int entry ) {
+    public boolean addEntry( int m, int n, double entry ) {
         
         boolean isAdded = false;
         
@@ -63,7 +63,7 @@ public class Matrix {
         if ( sameDimensions( other ) ) {
             for ( int i = 0; i < m; i++ ) {
                 for ( int j = 0; j < n; j++ ) {                   
-                    int entry = getEntry( i, j ) + other.getEntry( i, j ); 
+                    double entry = getEntry( i, j ) + other.getEntry( i, j ); 
                     sum.addEntry(j, i, entry);
                 }
             }
@@ -111,9 +111,9 @@ public class Matrix {
      * @return Integer.MIN_VALUE if an invalid spot, otherwise
      * the entry at the given dimensions
      */
-    public int getEntry( int m, int n ) {
+    public double getEntry( int m, int n ) {
         
-        int entry;
+        double entry;
         
         try {
             entry = matrix[m][n];
@@ -175,7 +175,7 @@ public class Matrix {
         if ( sameDimensions( other ) ) {           
             for ( int i = 0; i < m; i++ ) {
                 for ( int j = 0; j < n; j++ ) {                   
-                    int entry = getEntry( i, j ) - other.getEntry( i, j ); 
+                    double entry = getEntry( i, j ) - other.getEntry( i, j ); 
                     difference.addEntry(j, i, entry);
                 }
             }           
