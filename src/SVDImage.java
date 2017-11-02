@@ -1,4 +1,5 @@
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -19,6 +20,8 @@ public class SVDImage {
      
     public SVDImage( String imgName ) throws IOException {
         
+        File file = new File(imgName);
+        System.out.println(file.exists());
         BufferedImage image = ImageIO.read(SVDImage.class.getResource(imgName));
         imgWidth = image.getWidth();
         imgHeight = image.getHeight();
