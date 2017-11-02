@@ -1,3 +1,5 @@
+import java.io.IOException;
+
 import Jama.Matrix;
 
 
@@ -5,7 +7,7 @@ import Jama.SingularValueDecomposition;
 
 public class MatrixDriver {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
        
         Matrix matrix = new Matrix(3, 3);
         
@@ -29,6 +31,7 @@ public class MatrixDriver {
         V.print(3, 5);
         
         SVDImage img = new SVDImage( "81.jpg" );
+        
         
     }
     
