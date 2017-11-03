@@ -20,12 +20,12 @@ public class SVDImage {
      
     public SVDImage( String imgName ) throws IOException {
         
-        File file = new File(imgName);
+        File file = new File( imgName );
         BufferedImage image = null;
         
         if ( file.exists() ) {
             System.out.println( image );
-            image = ImageIO.read(SVDImage.class.getResource(imgName));
+            image = ImageIO.read(SVDImage.class.getResource( imgName ) );
             System.out.println( image );
         }
 
