@@ -21,13 +21,11 @@ public class SVDImage {
     public SVDImage( String imgName ) throws IOException {
         
         File file = new File( imgName );
-        BufferedImage image = null;
+        
         System.out.println( file.exists() );
         
-        if ( file.exists() ) {
-            image = ImageIO.read(SVDImage.class.getResource( imgName ) );
-            System.out.println( image );
-        }
+        BufferedImage image = ImageIO.read(SVDImage.class.getResource( imgName ) );
+        System.out.println( image );
 
         imgWidth = image.getWidth();
         imgHeight = image.getHeight();

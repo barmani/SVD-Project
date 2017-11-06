@@ -30,7 +30,7 @@ public class MatrixDriver {
         S.print(3, 5);
         V.print(3, 5);
         
-        SVDImage img = new SVDImage( "football.jpg" );
+        SVDImage img = new SVDImage( "81.jpg" );
         
         
     }
