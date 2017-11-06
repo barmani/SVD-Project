@@ -70,21 +70,23 @@ public class SVDImage {
      */
     public void drawApproximation( int index ) {
         
-        BufferedImage image2 = new BufferedImage( imgWidth, imgHeight, BufferedImage.TYPE_INT_RGB );
-        
-        for ( int i = 0; i < imgWidth; i++ ) {
-            for ( int j = 0; j < imgHeight; j++ ) {
-                image2.setRGB( i, j, (int) pictures[index].get( i, j ) );
+        if ( index >= 0 && index < pictures.length ) {
+            BufferedImage image2 = new BufferedImage( imgWidth, imgHeight, BufferedImage.TYPE_INT_RGB );
+            
+            for ( int i = 0; i < imgWidth; i++ ) {
+                for ( int j = 0; j < imgHeight; j++ ) {
+                    image2.setRGB( i, j, (int) pictures[index].get( i, j ) );
+                }
             }
-        }
 
-        // draw the image
-        JFrame frame = new JFrame();
-        frame.getContentPane().setLayout(new FlowLayout());
-        frame.getContentPane().add(new JLabel(new ImageIcon( image )));
-        frame.getContentPane().add(new JLabel(new ImageIcon( image2 )));
-        frame.pack();
-        frame.setVisible(true);
+            // draw the image
+            JFrame frame = new JFrame();
+            frame.getContentPane().setLayout(new FlowLayout());
+            frame.getContentPane().add(new JLabel(new ImageIcon( image )));
+            frame.getContentPane().add(new JLabel(new ImageIcon( image2 )));
+            frame.pack();
+            frame.setVisible(true);
+        }
         
     }
     
