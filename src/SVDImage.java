@@ -2,8 +2,6 @@ import java.awt.FlowLayout;
 import java.awt.Graphics2D;
 import java.awt.Image;
 
-import Catalano.Imaging.*;
-
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -17,16 +15,31 @@ import Jama.Matrix;
 
 import Jama.SingularValueDecomposition;
 
+/**
+ * Creates SVD approximations of a given image.
+ * 
+ * @author Brendan Armani, Andrew Levy, Andrew Tomassone
+ * @version 1.0
+ */
 public class SVDImage {
 
     private BufferedImage image;
     
     private Matrix imgPixels;
     
+    private Matrix[] pictures;
+    
     private int imgWidth;
     private int imgHeight;
     
-     
+    /**
+     * Constructor for an SVDImage. Creates a bufferedImage for the image the
+     * user wants to approximate, then makes a matrix of the image's RGB values 
+     * and an array of the SVD approximations of the image.
+     * 
+     * @param imgName the name of the image file
+     * @throws IOException input/output exception
+     */
     public SVDImage( String imgName ) throws IOException {
         
         File file = new File( imgName );
@@ -42,29 +55,26 @@ public class SVDImage {
         imgWidth = image.getWidth();
         imgHeight = image.getHeight();
         imgPixels = new Matrix( imgWidth, imgHeight );
+        pictures = new Matrix[imgWidth];
         
         populateMatrixRGB();
-        //redrawPicture();
         constructSVDMatrix();
  
-    }
+    }    
     
-    private void populateMatrixRGB() {
-        
-        for ( int i = 0; i < imgWidth; i++ ) {
-            for ( int j = 0; j < imgHeight; j++ ) {
-                imgPixels.set( i, j, image.getRGB( i, j ) );
-            }
-        }            
-    }
-    
-    private void redrawPicture() {
+    /**
+     * Draw a picture of a given approximation from the array of
+     * approximations next to the original picture.
+     * 
+     * @param index the index of pictures the user wants to draw
+     */
+    public void drawApproximation( int index ) {
         
         BufferedImage image2 = new BufferedImage( imgWidth, imgHeight, BufferedImage.TYPE_INT_RGB );
         
         for ( int i = 0; i < imgWidth; i++ ) {
             for ( int j = 0; j < imgHeight; j++ ) {
-                image2.setRGB( i, j, (int) imgPixels.get( i, j ) );
+                image2.setRGB( i, j, (int) pictures[index].get( i, j ) );
             }
         }
 
@@ -78,6 +88,10 @@ public class SVDImage {
         
     }
     
+    /**
+     * Populate the pictures array with each approximation using 
+     * the singular values.
+     */
     private void constructSVDMatrix() {
         
         SingularValueDecomposition svd = new SingularValueDecomposition( imgPixels );
@@ -88,8 +102,6 @@ public class SVDImage {
         Matrix newU;
         double newS;
         Matrix newV;
-        
-        Matrix[] pictures = new Matrix[imgWidth];
         
         for ( int i = 0; i < imgPixels.getColumnDimension(); i++ ) {
             newU = u.getMatrix( 0, imgPixels.getRowDimension() - 1, i, i);
@@ -106,16 +118,19 @@ public class SVDImage {
               
         }
         
-        System.out.println( imgPixels.getColumnDimension() + " " + imgPixels.getRowDimension() );
-        
-        BufferedImage image2 = new BufferedImage( imgWidth, imgHeight, BufferedImage.TYPE_INT_RGB );
+    }
+    
+    /**
+     * Fill the imgPixels matrix with RGB values from the 
+     * bufferedImage;
+     */
+    private void populateMatrixRGB() {
         
         for ( int i = 0; i < imgWidth; i++ ) {
             for ( int j = 0; j < imgHeight; j++ ) {
-                image2.setRGB( i, j, (int) pictures[359].get( i, j ) );
+                imgPixels.set( i, j, image.getRGB( i, j ) );
             }
-        }
-        
+        }            
     }
   
 }
