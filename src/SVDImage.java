@@ -23,7 +23,7 @@ public class SVDImage {
         File file = new File( imgName );
         
         System.out.println( file.exists() );
-        
+
         BufferedImage image = ImageIO.read(SVDImage.class.getResource( imgName ) );
         System.out.println( image );
 
