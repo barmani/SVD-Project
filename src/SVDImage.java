@@ -1,3 +1,5 @@
+import java.awt.FlowLayout;
+import java.awt.Graphics2D;
 import java.awt.Image;
 
 import Catalano.Imaging.*;
@@ -7,6 +9,9 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 
 import Jama.Matrix;
 
@@ -26,13 +31,13 @@ public class SVDImage {
         
         File file = new File( imgName );
         
-        System.out.println( file.exists() );
-        
         Image preImage = ImageIO.read( file );
                 
         image = new BufferedImage( preImage.getWidth(null), preImage.getHeight(null), BufferedImage.TYPE_INT_RGB );
-        System.out.println( image );
-        
+
+        Graphics2D g = image.createGraphics();
+        g.drawImage(preImage, 0, 0, null);
+        g.dispose();       
 
         imgWidth = image.getWidth();
         imgHeight = image.getHeight();
@@ -42,21 +47,31 @@ public class SVDImage {
         
     }
     
-    public void populateMatrixRGB() {
+    private void populateMatrixRGB() {
         
         for ( int i = 0; i < imgWidth; i++ ) {
             for ( int j = 0; j < imgHeight; j++ ) {
                 imgPixels.set( i, j, image.getRGB( i, j ) );
+                System.out.println( imgPixels.get( i, j ) );
             }
         }
         
-        System.out.println(imgPixels);
+        BufferedImage image2 = new BufferedImage( imgWidth, imgHeight, BufferedImage.TYPE_INT_RGB );
         
+        for ( int i = 0; i < imgWidth; i++ ) {
+            for ( int j = 0; j < imgHeight; j++ ) {
+                image2.setRGB( i, j, (int) imgPixels.get( i, j ) );
+            }
+        }
         
-       // FastBitmap map = new FastBitmap( image );
-        
-       // double[][] arr = map.toMatrixGrayAsDouble();
-        
+        // draw the image
+        JFrame frame = new JFrame();
+        frame.getContentPane().setLayout(new FlowLayout());
+        frame.getContentPane().add(new JLabel(new ImageIcon( image )));
+        frame.getContentPane().add(new JLabel(new ImageIcon( image2 )));
+        frame.pack();
+        frame.setVisible(true);       
             
     }
+  
 }
