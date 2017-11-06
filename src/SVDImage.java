@@ -44,6 +44,7 @@ public class SVDImage {
         imgPixels = new Matrix( imgWidth, imgHeight );
         
         populateMatrixRGB();
+        redrawPicture();
         
     }
     
@@ -52,9 +53,11 @@ public class SVDImage {
         for ( int i = 0; i < imgWidth; i++ ) {
             for ( int j = 0; j < imgHeight; j++ ) {
                 imgPixels.set( i, j, image.getRGB( i, j ) );
-                System.out.println( imgPixels.get( i, j ) );
             }
-        }
+        }            
+    }
+    
+    private void redrawPicture() {
         
         BufferedImage image2 = new BufferedImage( imgWidth, imgHeight, BufferedImage.TYPE_INT_RGB );
         
@@ -70,8 +73,8 @@ public class SVDImage {
         frame.getContentPane().add(new JLabel(new ImageIcon( image )));
         frame.getContentPane().add(new JLabel(new ImageIcon( image2 )));
         frame.pack();
-        frame.setVisible(true);       
-            
+        frame.setVisible(true);
+        
     }
   
 }
