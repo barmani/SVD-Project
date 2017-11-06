@@ -1,31 +1,26 @@
+import java.io.IOException;
+
 import Jama.Matrix;
+
 import Jama.SingularValueDecomposition;
 
+/**
+ * Driver for the SVDImage class with a test image.
+ * 
+ * @author Brendan Armani, Andrew Levy, Andrew Tomassone
+ */
 public class MatrixDriver {
 
-    public static void main(String[] args) {
-       
-        Matrix matrix = new Matrix(3, 3);
+    /**
+     * The main method. 
+     * @param args command line arguments
+     * @throws IOException input/output exception
+     */
+    public static void main(String[] args) throws IOException {
         
-        matrix.set(0,0,57);
-        matrix.set(0,1,44);
-        matrix.set(0,2,55);
-        matrix.set(1,0,33);
-        matrix.set(1,1,3);
-        matrix.set(1,2,4);
-        matrix.set(2,0,8);
-        matrix.set(2,1,55);
-        matrix.set(2,2,5);
-        
-        
-        SingularValueDecomposition svd = new SingularValueDecomposition( matrix );
-        Matrix U = svd.getU();
-        Matrix S = svd.getS();
-        Matrix V = svd.getV();
-        U.print(3, 5);
-        S.print(3, 5);
-        V.print(3, 5);
-        
+        SVDImage img = new SVDImage( "81.jpg" );
+        img.drawApproximation( 2 );
+   
     }
     
 
