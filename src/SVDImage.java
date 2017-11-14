@@ -46,7 +46,7 @@ public class SVDImage {
         
         Image preImage = ImageIO.read( file );
                 
-        image = new BufferedImage( preImage.getWidth(null), preImage.getHeight(null), BufferedImage.TYPE_INT_RGB );
+        image = new BufferedImage( preImage.getWidth(null), preImage.getHeight(null), BufferedImage.TYPE_BYTE_GRAY );
 
         Graphics2D g = image.createGraphics();
         g.drawImage(preImage, 0, 0, null);
@@ -71,7 +71,7 @@ public class SVDImage {
     public void drawApproximation( int index ) {
         
         if ( index >= 0 && index < pictures.length ) {
-            BufferedImage image2 = new BufferedImage( imgWidth, imgHeight, BufferedImage.TYPE_INT_RGB );
+            BufferedImage image2 = new BufferedImage( imgWidth, imgHeight, BufferedImage.TYPE_BYTE_GRAY );
             
             for ( int i = 0; i < imgWidth; i++ ) {
                 for ( int j = 0; j < imgHeight; j++ ) {
