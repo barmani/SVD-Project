@@ -5,6 +5,7 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -61,12 +62,12 @@ public class SVDImage {
     }    
     
     /**
-     * Draw a picture of a given approximation from the array of
-     * approximations next to the original picture.
+     * Compare a specific singular value picture with the 
+     * original picture.
      * 
      * @param index the index of pictures the user wants to draw
      */
-    public void drawApproximation( int index ) {
+    public void compareApproximation( int index ) {
         
         if ( index >= 0 && index < pictures.length ) {
             BufferedImage image2 = new BufferedImage( imgWidth, imgHeight, BufferedImage.TYPE_BYTE_GRAY );
@@ -86,6 +87,28 @@ public class SVDImage {
             frame.setVisible(true);
         }
         
+    }
+    
+    public ArrayList<BufferedImage> getImageList() {
+        
+        ArrayList<BufferedImage> list = new ArrayList<BufferedImage>();
+
+        for ( int i = 0; i < imgHeight; i++ ) {
+
+            BufferedImage tempImg = new BufferedImage( imgWidth, imgHeight, BufferedImage.TYPE_BYTE_GRAY );
+            
+            for ( int j = 0; j < imgWidth; j++ ) {
+                for ( int k = 0; k < imgHeight; k++ ) {
+                    tempImg.setRGB( j, k, (int) pictures[i].get( j, k ) );
+                }
+            }
+            
+            list.add( tempImg );
+            
+        }
+        
+        return list;
+
     }
     
     /**
