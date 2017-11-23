@@ -1,7 +1,9 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -31,8 +33,17 @@ public class ImageDisplayListener implements ActionListener {
             selectedFile = chooser.getSelectedFile();
             
             try {
+                
                 SVDImage image = new SVDImage( selectedFile );
-                image.drawApproximation(300);
+                //image.compareApproximation(300);
+                ArrayList<BufferedImage> imgList = image.getImageList();
+                
+                for ( BufferedImage img: imgList ) {
+                    
+                    window.addToList( img );
+                    
+                }
+                
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
