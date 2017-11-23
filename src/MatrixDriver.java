@@ -20,8 +20,8 @@ public class MatrixDriver {
         
         ImageDisplayWindow window = new ImageDisplayWindow();
         
-        SVDImage img = new SVDImage( "football.jpg" );
-        img.drawApproximation( 400 );
+        // SVDImage img = new SVDImage( "football.jpg" );
+        // img.drawApproximation( 400 );
    
     }
     
