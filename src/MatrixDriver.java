@@ -18,8 +18,10 @@ public class MatrixDriver {
      */
     public static void main(String[] args) throws IOException {
         
-        SVDImage img = new SVDImage( "81.jpg" );
-        img.drawApproximation( 2 );
+        ImageDisplayWindow window = new ImageDisplayWindow();
+        
+        // SVDImage img = new SVDImage( "football.jpg" );
+        // img.drawApproximation( 400 );
    
     }
     
