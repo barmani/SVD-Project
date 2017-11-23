@@ -14,10 +14,10 @@ import javax.swing.JScrollPane;
 
 public class ImageDisplayWindow extends JFrame {
 
-    private DefaultListModel<JLabel> listModel;
+    private DefaultListModel listModel;
     
     private ImageDisplayListener listener;
-    
+        
     private JList list;
     
     private JPanel app;
@@ -31,7 +31,7 @@ public class ImageDisplayWindow extends JFrame {
     
     public ImageDisplayWindow() {
         
-        setSize( 900, 900 );
+        setSize( 1200, 900 );
         
         setPanels();
         setList();
@@ -59,19 +59,22 @@ public class ImageDisplayWindow extends JFrame {
     
     private void setList() {
         
-        listModel = new DefaultListModel<JLabel>();
+        listModel = new DefaultListModel();
         
         list = new JList( listModel );
         
         scroller = new JScrollPane( list );
         
-        scroller.setPreferredSize( new Dimension( 800, 800 ) );
+        scroller.setPreferredSize( new Dimension( 1000, 800 ) );
         
     }
     
     public void addToList( BufferedImage img ) {
         
-        listModel.addElement( new JLabel( new ImageIcon( img ) ) );
+        
+        ImageIcon icon = new ImageIcon( img );
+        
+        listModel.addElement( icon );
         
     }
     
@@ -93,7 +96,7 @@ public class ImageDisplayWindow extends JFrame {
         app.setLayout( new BoxLayout( app, BoxLayout.Y_AXIS ) );
         buttons.setLayout( new FlowLayout() );
         pictureWindow.setLayout( new FlowLayout() );
-        
+
     }
     
     private void setListener() {
