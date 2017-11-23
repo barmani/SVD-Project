@@ -40,9 +40,7 @@ public class SVDImage {
      * @param imgName the name of the image file
      * @throws IOException input/output exception
      */
-    public SVDImage( String imgName ) throws IOException {
-        
-        File file = new File( imgName );
+    public SVDImage( File file ) throws IOException {
         
         Image preImage = ImageIO.read( file );
                 

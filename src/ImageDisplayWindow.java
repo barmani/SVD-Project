@@ -14,6 +14,7 @@ public class ImageDisplayWindow extends JFrame {
     private JPanel pictureWindow;
     
     private JButton browse;
+    private JButton quit;
     
     public ImageDisplayWindow() {
         
@@ -33,8 +34,10 @@ public class ImageDisplayWindow extends JFrame {
     private void buildContent() {
         
         buttons.add( browse );
+        buttons.add( quit );
         
         app.add( buttons );
+        
     }
     
     private void setPanels() {
@@ -50,17 +53,21 @@ public class ImageDisplayWindow extends JFrame {
         app.setLayout( new BoxLayout( app, BoxLayout.Y_AXIS ) );
         buttons.setLayout( new FlowLayout() );
         pictureWindow.setLayout( new FlowLayout() );
+        
     }
     
     private void setListener() {
         
-        listener = new ImageDisplayListener();
+        listener = new ImageDisplayListener(this);
+        
         browse.addActionListener( listener );
+        quit.addActionListener( listener );
         
     }
     
     private void setButtons() {
         
         browse = new JButton( "Browse Files" );
+        quit = new JButton( "Quit" );
     }
 }
