@@ -18,11 +18,14 @@ public class ImageDisplayWindow extends JFrame {
     
     private ImageDisplayListener listener;
         
+    private JLabel titleLabel;
+    
     private JList list;
     
     private JPanel app;
     private JPanel buttons;
     private JPanel pictureWindow;
+    private JPanel title;
     
     JScrollPane scroller;
     
@@ -31,16 +34,17 @@ public class ImageDisplayWindow extends JFrame {
     
     public ImageDisplayWindow() {
         
-        setSize( 1200, 900 );
-        
         setPanels();
         setList();
         setLayouts();
         setButtons();
         setListener();
+        setLabels();
         buildContent();
         
+        
         setContentPane( app );
+        pack();
         setVisible( true );
           
     }
@@ -52,6 +56,9 @@ public class ImageDisplayWindow extends JFrame {
         
         pictureWindow.add( scroller );
         
+        title.add( titleLabel );
+        
+        app.add( title );
         app.add( pictureWindow );
         app.add( buttons );
         
@@ -88,6 +95,7 @@ public class ImageDisplayWindow extends JFrame {
         app = new JPanel();
         buttons = new JPanel();
         pictureWindow = new JPanel();
+        title = new JPanel();
         
     }
     
@@ -96,6 +104,7 @@ public class ImageDisplayWindow extends JFrame {
         app.setLayout( new BoxLayout( app, BoxLayout.Y_AXIS ) );
         buttons.setLayout( new FlowLayout() );
         pictureWindow.setLayout( new FlowLayout() );
+        title.setLayout( new FlowLayout() );
 
     }
     
@@ -108,9 +117,16 @@ public class ImageDisplayWindow extends JFrame {
         
     }
     
+    private void setLabels() {
+        
+        titleLabel = new JLabel( "Math 448 SVD Analysis" );
+        
+    }
+    
     private void setButtons() {
         
         browse = new JButton( "Browse Files" );
         quit = new JButton( "Quit" );
     }
+    
 }
