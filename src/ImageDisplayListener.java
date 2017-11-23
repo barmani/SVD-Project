@@ -35,7 +35,6 @@ public class ImageDisplayListener implements ActionListener {
             try {
                 
                 SVDImage image = new SVDImage( selectedFile );
-                //image.compareApproximation(300);
                 ArrayList<BufferedImage> imgList = image.getImageList();
                 
                 for ( BufferedImage img: imgList ) {
