@@ -1,17 +1,20 @@
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.image.BufferedImage;
 
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 public class ImageDisplayWindow extends JFrame {
 
-    private DefaultListModel<BufferedImage> listModel;
+    private DefaultListModel<JLabel> listModel;
     
     private ImageDisplayListener listener;
     
@@ -56,17 +59,19 @@ public class ImageDisplayWindow extends JFrame {
     
     private void setList() {
         
-        listModel = new DefaultListModel<BufferedImage>();
+        listModel = new DefaultListModel<JLabel>();
         
         list = new JList( listModel );
         
         scroller = new JScrollPane( list );
         
+        scroller.setPreferredSize( new Dimension( 800, 800 ) );
+        
     }
     
     public void addToList( BufferedImage img ) {
         
-        listModel.addElement( img );
+        listModel.addElement( new JLabel( new ImageIcon( img ) ) );
         
     }
     
