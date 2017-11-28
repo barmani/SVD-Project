@@ -161,5 +161,17 @@ public class SVDImage {
             }
         }            
     }
+    
+    public int getHeight() {
+        
+        return imgHeight;
+        
+    }
+    
+    public int getWidth() {
+        
+        return imgWidth;
+        
+    }
   
 }

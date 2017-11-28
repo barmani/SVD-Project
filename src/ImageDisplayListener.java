@@ -11,15 +11,21 @@ import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+/**
+ * This class is the listener for the display window. It responds to
+ * events triggered from the buttons and the slider.
+ */
 public class ImageDisplayListener implements ActionListener, ChangeListener {
 
-    ArrayList<BufferedImage> imgList;
+    private ArrayList<BufferedImage> imgList;
     
     private File selectedFile;
     
     private ImageDisplayWindow window;
     
     private JFileChooser chooser;
+    
+    private SVDImage image;
     
     /**
      * Constructor for the listener. Create access to the window, set the 
@@ -30,6 +36,8 @@ public class ImageDisplayListener implements ActionListener, ChangeListener {
     public ImageDisplayListener( ImageDisplayWindow window ) {
         
         this.window = window;
+        
+        imgList = new ArrayList<BufferedImage>();
         
         chooser = new JFileChooser();
         
@@ -51,25 +59,26 @@ public class ImageDisplayListener implements ActionListener, ChangeListener {
             chooser.showOpenDialog( window );
             selectedFile = chooser.getSelectedFile();
             
+            // produce list of images, create the slider, initialize it to the first image
             try {
                 
-                SVDImage image = new SVDImage( selectedFile );
-                imgList = image.getImageList();
-                
-                window.setSlider( 1, imgList.size() );
-                window.revalidate();
+                image = new SVDImage( selectedFile );
                 
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
-                    
             
+            imgList = image.getImageList();       
+            
+            window.setSlider( 1, imgList.size() );
+            window.setSize( image.getWidth() + 50, image.getHeight() + 150 );
+            window.revalidate();
+            
+            changeDisplayImage( 1 );
+   
         } else if ( button.getText().equals( "Quit" ) ) {
             System.exit( 0 );
         }
-        
-        
-        
         
     }
     
@@ -94,6 +103,10 @@ public class ImageDisplayListener implements ActionListener, ChangeListener {
         
         int value = slider.getValue();
         
+        changeDisplayImage( value );
+        
+        window.changeLabelText( "" + value );
+        
     }
     
     /**
@@ -102,6 +115,12 @@ public class ImageDisplayListener implements ActionListener, ChangeListener {
      * @param index index of image
      */
     private void changeDisplayImage( int index ) {
+        
+        if ( imgList != null && imgList.size() > 0 && index > 0 ) {
+
+            window.changeDisplayImage( imgList.get( index - 1 ) );
+            
+        }
         
     }
 
