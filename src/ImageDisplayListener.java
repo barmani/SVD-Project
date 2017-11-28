@@ -77,7 +77,9 @@ public class ImageDisplayListener implements ActionListener, ChangeListener {
             changeDisplayImage( 1 );
    
         } else if ( button.getText().equals( "Quit" ) ) {
+            
             System.exit( 0 );
+            
         }
         
     }
@@ -108,6 +110,10 @@ public class ImageDisplayListener implements ActionListener, ChangeListener {
         window.changeLabelText( "" + value );
         
     }
+    
+    
+    /************************** private methods **********************/
+    
     
     /**
      * Display the image at the current slider value in the window.
