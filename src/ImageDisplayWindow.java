@@ -89,17 +89,26 @@ public class ImageDisplayWindow extends JFrame {
      * @param min first value on the slider
      * @param max last value on the slider
      */
-    public void setSlider( int min, int max ) {
+    public void setSlider( int min, int max, int value ) {
                 
-        slider = new JSlider( min, max );
-        
-        slider.addChangeListener( listener );
-        
-        slidebar.add( slider );
-        
-        slidebar.add( countLabel );
-        
-        
+        if ( slider != null ) {
+            
+            slider.setMinimum( min );
+            slider.setMaximum( max );
+            slider.setValue( value );
+            
+        } else {
+            
+            slider = new JSlider( min, max, value );
+            
+            slider.addChangeListener( listener );
+            
+            slidebar.add( slider );
+            
+            slidebar.add( countLabel ); 
+            
+        }
+ 
     }
     
     /**
