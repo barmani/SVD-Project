@@ -89,6 +89,12 @@ public class SVDImage {
         
     }
     
+    /**
+     * Return the array of stored images calculating by adding the next
+     * singular value to the previous image.
+     * 
+     * @return the list of images
+     */
     public ArrayList<BufferedImage> getImageList() {
         
         ArrayList<BufferedImage> list = new ArrayList<BufferedImage>();

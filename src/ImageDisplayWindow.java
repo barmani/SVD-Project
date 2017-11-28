@@ -1,3 +1,4 @@
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.image.BufferedImage;
@@ -11,12 +12,16 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSlider;
 
 public class ImageDisplayWindow extends JFrame {
 
     private DefaultListModel listModel;
     
     private ImageDisplayListener listener;
+    
+    private JButton browse;
+    private JButton quit;
         
     private JLabel titleLabel;
     
@@ -25,12 +30,13 @@ public class ImageDisplayWindow extends JFrame {
     private JPanel app;
     private JPanel buttons;
     private JPanel pictureWindow;
+    private JPanel slidebar;
     private JPanel title;
     
     JScrollPane scroller;
+
+    private JSlider slider;
     
-    private JButton browse;
-    private JButton quit;
     
     public ImageDisplayWindow() {
         
@@ -60,6 +66,7 @@ public class ImageDisplayWindow extends JFrame {
         
         app.add( title );
         app.add( pictureWindow );
+        app.add( slidebar );
         app.add( buttons );
         
     }
@@ -72,7 +79,27 @@ public class ImageDisplayWindow extends JFrame {
         
         scroller = new JScrollPane( list );
         
-        scroller.setPreferredSize( new Dimension( 1000, 800 ) );
+        //scroller.setPreferredSize( new Dimension( 1000, 800 ) );
+        
+    }
+    
+    /**
+     * Set the slider and listener for the slider after the image has
+     * been uploaded.
+     * 
+     * @param min first value on the slider
+     * @param max last value on the slider
+     */
+    public void setSlider( int min, int max ) {
+        
+        ImageDisplayListener slideListener = new ImageDisplayListener( this );
+        
+        slider = new JSlider( min, max );
+        
+        slider.addChangeListener( slideListener );
+        
+        slidebar.add( slider );
+        
         
     }
     
@@ -95,6 +122,7 @@ public class ImageDisplayWindow extends JFrame {
         app = new JPanel();
         buttons = new JPanel();
         pictureWindow = new JPanel();
+        slidebar = new JPanel();
         title = new JPanel();
         
     }
@@ -103,7 +131,8 @@ public class ImageDisplayWindow extends JFrame {
         
         app.setLayout( new BoxLayout( app, BoxLayout.Y_AXIS ) );
         buttons.setLayout( new FlowLayout() );
-        pictureWindow.setLayout( new FlowLayout() );
+        pictureWindow.setLayout( new BorderLayout() );
+        slidebar.setLayout( new FlowLayout() );
         title.setLayout( new FlowLayout() );
 
     }
