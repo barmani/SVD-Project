@@ -7,21 +7,40 @@ import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.JSlider;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
-public class ImageDisplayListener implements ActionListener {
+public class ImageDisplayListener implements ActionListener, ChangeListener {
 
+    ArrayList<BufferedImage> imgList;
+    
     private File selectedFile;
     
     private ImageDisplayWindow window;
     
     private JFileChooser chooser;
     
+    /**
+     * Constructor for the listener. Create access to the window, set the 
+     * file chooser.
+     * 
+     * @param window the window being used
+     */
     public ImageDisplayListener( ImageDisplayWindow window ) {
+        
         this.window = window;
         
         chooser = new JFileChooser();
+        
     }
     
+    /**
+     * Respond to the browse and quit buttons to upload a picture
+     * or quit the application.
+     * 
+     * @param e the event triggered
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         
@@ -35,13 +54,10 @@ public class ImageDisplayListener implements ActionListener {
             try {
                 
                 SVDImage image = new SVDImage( selectedFile );
-                ArrayList<BufferedImage> imgList = image.getImageList();
+                imgList = image.getImageList();
                 
-                for ( BufferedImage img: imgList ) {
-                    
-                    window.addToList( img );
-                    
-                }
+                window.setSlider( 1, imgList.size() );
+                window.revalidate();
                 
             } catch (IOException e1) {
                 e1.printStackTrace();
@@ -57,9 +73,35 @@ public class ImageDisplayListener implements ActionListener {
         
     }
     
+    /**
+     * Get the file select by the user.
+     * 
+     * @return the selected file
+     */
     public File getFile() {
         
         return selectedFile;
+        
+    }
+
+    /**
+     * Respond to changes from the slider.
+     */
+    @Override
+    public void stateChanged(ChangeEvent e) {
+        
+        JSlider slider = (JSlider) e.getSource();
+        
+        int value = slider.getValue();
+        
+    }
+    
+    /**
+     * Display the image at the current slider value in the window.
+     * 
+     * @param index index of image
+     */
+    private void changeDisplayImage( int index ) {
         
     }
 
