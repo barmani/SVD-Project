@@ -1,3 +1,4 @@
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.image.BufferedImage;
@@ -11,13 +12,23 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSlider;
 
+/**
+ * This class puts together the main display window. It allows a user to
+ * choose a picture from their files and see how quickly the SVD approximates
+ * it using a slidebar.
+ */
 public class ImageDisplayWindow extends JFrame {
 
     private DefaultListModel listModel;
     
     private ImageDisplayListener listener;
+    
+    private JButton browse;
+    private JButton quit;
         
+    private JLabel countLabel;
     private JLabel titleLabel;
     
     private JList list;
@@ -25,13 +36,17 @@ public class ImageDisplayWindow extends JFrame {
     private JPanel app;
     private JPanel buttons;
     private JPanel pictureWindow;
+    private JPanel slidebar;
     private JPanel title;
     
-    JScrollPane scroller;
+    private JScrollPane scroller;
+
+    private JSlider slider;
     
-    private JButton browse;
-    private JButton quit;
-    
+    /**
+     * The constructor for the window. Uses various methods to initialize
+     * the components and set them in place.
+     */
     public ImageDisplayWindow() {
         
         setPanels();
@@ -49,6 +64,70 @@ public class ImageDisplayWindow extends JFrame {
           
     }
     
+    /**
+     * Replace the current image being displayed with a new image from the
+     * SVD list.
+     * 
+     * @param img the image to display
+     */
+    public void changeDisplayImage( BufferedImage img ) {
+        
+        ImageIcon icon = new ImageIcon( img );
+        
+        listModel.removeAllElements();
+        
+        listModel.addElement( icon );
+        
+    }
+    
+    /**
+     * Alter the text in the label to show what number the slidebar
+     * is on.
+     * 
+     * @param text the text to display
+     */
+    public void changeLabelText( String text ) {
+        
+        countLabel.setText( text );
+        
+    }
+    
+    /**
+     * Set the slider and listener for the slider after the image has
+     * been uploaded.
+     * 
+     * @param min first value on the slider
+     * @param max last value on the slider
+     */
+    public void setSlider( int min, int max, int value ) {
+                
+        if ( slider != null ) {
+            
+            slider.setMinimum( min );
+            slider.setMaximum( max );
+            slider.setValue( value );
+            
+        } else {
+            
+            slider = new JSlider( min, max, value );
+            
+            slider.addChangeListener( listener );
+            
+            slidebar.add( slider );
+            
+            slidebar.add( countLabel ); 
+            
+        }
+ 
+    }
+    
+    
+    /***************************** private methods ***************************/
+    
+    
+    /**
+     * Add content to the panels.
+     */
     private void buildContent() {
         
         buttons.add( browse );
@@ -60,10 +139,48 @@ public class ImageDisplayWindow extends JFrame {
         
         app.add( title );
         app.add( pictureWindow );
+        app.add( slidebar );
         app.add( buttons );
         
     }
     
+    /**
+     * Initialize the JButtons.
+     */
+    private void setButtons() {
+        
+        browse = new JButton( "Browse Files" );
+        quit = new JButton( "Quit" );
+        
+    }
+    
+    /**
+     * Add content to the JLabels.
+     */
+    private void setLabels() {
+        
+        titleLabel = new JLabel( "Math 448 SVD Analysis" );
+        countLabel = new JLabel( "1" );
+        
+    }
+    
+    /**
+     * Give the JPanels layouts.
+     */
+    private void setLayouts() {
+        
+        app.setLayout( new BoxLayout( app, BoxLayout.Y_AXIS ) );
+        buttons.setLayout( new FlowLayout() );
+        pictureWindow.setLayout( new FlowLayout() );
+        slidebar.setLayout( new FlowLayout() );
+        title.setLayout( new FlowLayout() );
+
+    }
+    
+    
+    /**
+     * Set the JList of images to be displayed.
+     */
     private void setList() {
         
         listModel = new DefaultListModel();
@@ -71,43 +188,12 @@ public class ImageDisplayWindow extends JFrame {
         list = new JList( listModel );
         
         scroller = new JScrollPane( list );
-        
-        scroller.setPreferredSize( new Dimension( 1000, 800 ) );
-        
+                
     }
     
-    public void addToList( BufferedImage img ) {
-        
-        
-        ImageIcon icon = new ImageIcon( img );
-        
-        listModel.addElement( icon );
-        
-    }
-    
-    public void updateList() {
-        // TODO implement if needed
-
-    }
-    
-    private void setPanels() {
-        
-        app = new JPanel();
-        buttons = new JPanel();
-        pictureWindow = new JPanel();
-        title = new JPanel();
-        
-    }
-    
-    private void setLayouts() {
-        
-        app.setLayout( new BoxLayout( app, BoxLayout.Y_AXIS ) );
-        buttons.setLayout( new FlowLayout() );
-        pictureWindow.setLayout( new FlowLayout() );
-        title.setLayout( new FlowLayout() );
-
-    }
-    
+    /**
+     * Initialize the listener and add it to the buttons.
+     */
     private void setListener() {
         
         listener = new ImageDisplayListener(this);
@@ -117,16 +203,18 @@ public class ImageDisplayWindow extends JFrame {
         
     }
     
-    private void setLabels() {
+    /**
+     * Initialize the JPanels.
+     */
+    private void setPanels() {
         
-        titleLabel = new JLabel( "Math 448 SVD Analysis" );
+        app = new JPanel();
+        buttons = new JPanel();
+        pictureWindow = new JPanel();
+        slidebar = new JPanel();
+        title = new JPanel();
         
-    }
-    
-    private void setButtons() {
-        
-        browse = new JButton( "Browse Files" );
-        quit = new JButton( "Quit" );
     }
     
 }
+

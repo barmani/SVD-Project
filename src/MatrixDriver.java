@@ -19,9 +19,6 @@ public class MatrixDriver {
     public static void main(String[] args) throws IOException {
         
         ImageDisplayWindow window = new ImageDisplayWindow();
-        
-        // SVDImage img = new SVDImage( "football.jpg" );
-        // img.drawApproximation( 400 );
    
     }
     

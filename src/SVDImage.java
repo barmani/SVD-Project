@@ -85,10 +85,17 @@ public class SVDImage {
             frame.getContentPane().add(new JLabel(new ImageIcon( image2 )));
             frame.pack();
             frame.setVisible(true);
+            
         }
         
     }
     
+    /**
+     * Return the array of stored images calculating by adding the next
+     * singular value to the previous image.
+     * 
+     * @return the list of images
+     */
     public ArrayList<BufferedImage> getImageList() {
         
         ArrayList<BufferedImage> list = new ArrayList<BufferedImage>();
@@ -110,6 +117,30 @@ public class SVDImage {
         return list;
 
     }
+    
+    /**
+     * Get the height of the image.
+     * 
+     * @return the height
+     */
+    public int getHeight() {
+        
+        return imgHeight;
+        
+    }
+    
+    /**
+     * Get the width of the image.
+     * 
+     * @return the width
+     */
+    public int getWidth() {
+        
+        return imgWidth;
+        
+    }
+    
+    /*********************** private methods *********************/
     
     /**
      * Populate the pictures array with each approximation using 
