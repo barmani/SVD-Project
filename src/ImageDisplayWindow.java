@@ -23,6 +23,7 @@ public class ImageDisplayWindow extends JFrame {
     private JButton browse;
     private JButton quit;
         
+    private JLabel countLabel;
     private JLabel titleLabel;
     
     private JList list;
@@ -78,9 +79,7 @@ public class ImageDisplayWindow extends JFrame {
         list = new JList( listModel );
         
         scroller = new JScrollPane( list );
-        
-        //scroller.setPreferredSize( new Dimension( 1000, 800 ) );
-        
+                
     }
     
     /**
@@ -91,31 +90,34 @@ public class ImageDisplayWindow extends JFrame {
      * @param max last value on the slider
      */
     public void setSlider( int min, int max ) {
-        
-        ImageDisplayListener slideListener = new ImageDisplayListener( this );
-        
+                
         slider = new JSlider( min, max );
         
-        slider.addChangeListener( slideListener );
+        slider.addChangeListener( listener );
         
         slidebar.add( slider );
+        
+        slidebar.add( countLabel );
         
         
     }
     
-    public void addToList( BufferedImage img ) {
-        
+    /**
+     * Replace the current image being displayed with a new image from the
+     * SVD list.
+     * 
+     * @param img the image to display
+     */
+    public void changeDisplayImage( BufferedImage img ) {
         
         ImageIcon icon = new ImageIcon( img );
+        
+        listModel.removeAllElements();
         
         listModel.addElement( icon );
         
     }
-    
-    public void updateList() {
-        // TODO implement if needed
 
-    }
     
     private void setPanels() {
         
@@ -131,7 +133,7 @@ public class ImageDisplayWindow extends JFrame {
         
         app.setLayout( new BoxLayout( app, BoxLayout.Y_AXIS ) );
         buttons.setLayout( new FlowLayout() );
-        pictureWindow.setLayout( new BorderLayout() );
+        pictureWindow.setLayout( new FlowLayout() );
         slidebar.setLayout( new FlowLayout() );
         title.setLayout( new FlowLayout() );
 
@@ -149,6 +151,13 @@ public class ImageDisplayWindow extends JFrame {
     private void setLabels() {
         
         titleLabel = new JLabel( "Math 448 SVD Analysis" );
+        countLabel = new JLabel( "1" );
+        
+    }
+    
+    public void changeLabelText( String text ) {
+        
+        countLabel.setText( text );
         
     }
     
