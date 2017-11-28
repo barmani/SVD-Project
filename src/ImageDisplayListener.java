@@ -70,8 +70,8 @@ public class ImageDisplayListener implements ActionListener, ChangeListener {
             
             imgList = image.getImageList();       
             
-            window.setSlider( 1, imgList.size() );
-            window.setSize( image.getWidth() + 50, image.getHeight() + 150 );
+            window.setSlider( 1, imgList.size(), 1 );
+            window.setSize( image.getWidth() + 50, image.getHeight() + 140 );
             window.revalidate();
             
             changeDisplayImage( 1 );
