@@ -118,6 +118,30 @@ public class SVDImage {
     }
     
     /**
+     * Get the height of the image.
+     * 
+     * @return the height
+     */
+    public int getHeight() {
+        
+        return imgHeight;
+        
+    }
+    
+    /**
+     * Get the width of the image.
+     * 
+     * @return the width
+     */
+    public int getWidth() {
+        
+        return imgWidth;
+        
+    }
+    
+    /*********************** private methods *********************/
+    
+    /**
      * Populate the pictures array with each approximation using 
      * the singular values.
      */
@@ -160,18 +184,6 @@ public class SVDImage {
                 imgPixels.set( i, j, image.getRGB( i, j ) );
             }
         }            
-    }
-    
-    public int getHeight() {
-        
-        return imgHeight;
-        
-    }
-    
-    public int getWidth() {
-        
-        return imgWidth;
-        
     }
   
 }
