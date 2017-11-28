@@ -85,6 +85,7 @@ public class SVDImage {
             frame.getContentPane().add(new JLabel(new ImageIcon( image2 )));
             frame.pack();
             frame.setVisible(true);
+            
         }
         
     }
