@@ -80,19 +80,17 @@ public class ImageDisplayListener implements ActionListener, ChangeListener {
             changeDisplayImage( 1 );
    
         } else if ( button.getText().equals( "Save" ) ) {
-            System.out.println( "in block" );
             
-            BufferedImage currentImg = imgList.get( window.getLabelTextAsInt() );
+            BufferedImage currentImg = imgList.get( window.getLabelTextAsInt() - 1 );
             
-            System.out.println( currentImg );
             if ( currentImg != null ) {
                 
                 try {
-                    System.out.println( "hit" );
+                    
                     File saveFile = new File( "filename" );
-                    JFileChooser saveChooser = new JFileChooser("C:/");  
+                    JFileChooser saveChooser = new JFileChooser("C:/Users/brendanarmani/documents");  
                     saveChooser.setSelectedFile(saveFile);   
-                    ImageIO.write( currentImg, "jpg", chooser.getSelectedFile() );
+                    ImageIO.write( currentImg, "jpg", saveChooser.getSelectedFile() );
 
                 } catch ( IOException exception ) {
                     
