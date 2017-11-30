@@ -1,3 +1,4 @@
+import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -5,6 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JSlider;
@@ -78,7 +80,24 @@ public class ImageDisplayListener implements ActionListener, ChangeListener {
             changeDisplayImage( 1 );
    
         } else if ( button.getText().equals( "Save" ) ) {
+            System.out.println( "in block" );
             
+            BufferedImage currentImg = imgList.get( window.getLabelTextAsInt() );
+            
+            System.out.println( currentImg );
+            if ( currentImg != null ) {
+                
+                try {
+                    System.out.println( "hit" );
+                    File saveFile = new File( "filename" );
+                    JFileChooser saveChooser = new JFileChooser("C:/");  
+                    saveChooser.setSelectedFile(saveFile);   
+                    ImageIO.write( currentImg, "jpg", chooser.getSelectedFile() );
+
+                } catch ( IOException exception ) {
+                    
+                }
+            }
             
         } else if ( button.getText().equals( "Quit" ) ) {
             
@@ -96,6 +115,27 @@ public class ImageDisplayListener implements ActionListener, ChangeListener {
     public File getFile() {
         
         return selectedFile;
+        
+    }
+    
+    /**
+     * Get a image in the list of buffered images.
+     * 
+     * @param which image to get
+     * @return the image
+     */
+    public BufferedImage getImageFromList( int which ) {
+        
+        BufferedImage imageToGet = null;
+        
+        if ( imgList != null && imgList.size() > 0 
+                && which >= 0 && which < imgList.size() ) {
+            
+            imageToGet = imgList.get( which );
+            
+        }
+        
+        return imageToGet;
         
     }
 
