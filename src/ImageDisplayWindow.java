@@ -94,6 +94,23 @@ public class ImageDisplayWindow extends JFrame {
     }
     
     /**
+     * Get the current picture being displayed.
+     * 
+     * @return the image
+     */
+    public BufferedImage getSelectedPicture() {
+        
+        BufferedImage image = null;
+        
+        if ( listModel != null && !listModel.isEmpty() ) {
+            image = (BufferedImage) listModel.get( 0 );
+        }
+        
+        return image;
+        
+    }
+    
+    /**
      * Set the slider and listener for the slider after the image has
      * been uploaded.
      * 
