@@ -93,20 +93,17 @@ public class ImageDisplayWindow extends JFrame {
         
     }
     
-    /**
-     * Get the current picture being displayed.
-     * 
-     * @return the image
-     */
-    public BufferedImage getSelectedPicture() {
+    public int getLabelTextAsInt() {
         
-        BufferedImage image = null;
+        int number = -1;
         
-        if ( listModel != null && !listModel.isEmpty() ) {
-            image = (BufferedImage) listModel.get( 0 );
+        try {
+            number = Integer.parseInt( countLabel.getText() );
+        } catch ( NumberFormatException e ) {
+            
         }
         
-        return image;
+        return number;
         
     }
     
@@ -232,6 +229,7 @@ public class ImageDisplayWindow extends JFrame {
         
         browse.addActionListener( listener );
         quit.addActionListener( listener );
+        save.addActionListener( listener );
         
     }
     
