@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -26,7 +27,7 @@ public class SVDImage {
 
     private BufferedImage image;
     
-    private Matrix imgPixels;
+    private Matrix imgPixels;    
     
     private Matrix[] pictures;
     
@@ -45,7 +46,7 @@ public class SVDImage {
         
         Image preImage = ImageIO.read( file );
                 
-        image = new BufferedImage( preImage.getWidth(null), preImage.getHeight(null), BufferedImage.TYPE_INT_RGB  );
+        image = new BufferedImage( preImage.getWidth(null), preImage.getHeight(null), BufferedImage.TYPE_INT_RGB );
         
         Graphics2D g = image.createGraphics();
         g.drawImage(preImage, 0, 0, null);
@@ -60,7 +61,7 @@ public class SVDImage {
         changeMatrixToDoubles();
         constructSVDMatrix();
         convertMatricesBack();       
- 
+        
     }    
     
     /**
@@ -165,6 +166,7 @@ public class SVDImage {
 //        frame.getContentPane().add(new JLabel(new ImageIcon( image )));
 //        frame.pack();
 //        frame.setVisible(true);
+        
     }
     
     /**
@@ -215,7 +217,6 @@ public class SVDImage {
     private void convertMatricesBack() {
         
         for ( int i = 0; i < pictures.length; i++ ) {
-            System.out.println( pictures[i] );
             Matrix tempMatrix = pictures[i];
             for (int row = 0; row < imgWidth; row++) {
                 for (int col = 0; col < imgHeight; col++) {
@@ -244,20 +245,28 @@ public class SVDImage {
         for (int row = 0; row < imgWidth; row++) {
             for (int col = 0; col < imgHeight; col++) {
 
-                int pixel = image.getRGB( row, col );
-
-                int R = (pixel >> 16) & 0x000000FF;
-                System.out.println( R );
-                int G = (pixel >> 8) & 0x000000FF;
-                System.out.println( G );
-                int B = (pixel) & 0x000000FF;
-                System.out.println( B );
+//                int pixel = image.getRGB( row, col );
+//
+//                int R = (pixel >> 16) & 0x000000FF;
+//                int G = (pixel >> 8) & 0x000000FF;
+//                int B = (pixel) & 0x000000FF;
+//                
+//                // luminosity method of conversion
+//                double gray =  0.2989 * R + 0.5870 * G + 0.1140 * B;
+//                // int newPixel = (gray<<16) | (gray<<8) | gray;
                 
-                double Ga = 0.21 * R + 0.71 * G + 0.07 * B;
-                imgPixels.set( row, col, Ga );
+                // Remove the alpha component
+                Color c = new Color(image.getRGB(row, col) & 0x00ffffff);
+                // Normalize
+                int newRed = (int) (0.2989f * c.getRed());
+                int newGreen = (int) (0.5870f * c.getGreen());
+                int newBlue = (int) (0.1140f * c.getBlue());
+                int roOffset = newRed + newGreen + newBlue;
+                
+                imgPixels.set( row, col, roOffset );
 
             }
-        }   
+        }
         
         BufferedImage tempImg = new BufferedImage( imgWidth, imgHeight, BufferedImage.TYPE_INT_RGB );
         
