@@ -45,8 +45,8 @@ public class SVDImage {
         
         Image preImage = ImageIO.read( file );
                 
-        image = new BufferedImage( preImage.getWidth(null), preImage.getHeight(null), BufferedImage.TYPE_BYTE_GRAY );
-
+        image = new BufferedImage( preImage.getWidth(null), preImage.getHeight(null), BufferedImage.TYPE_INT_RGB  );
+        
         Graphics2D g = image.createGraphics();
         g.drawImage(preImage, 0, 0, null);
         g.dispose();       
@@ -54,10 +54,12 @@ public class SVDImage {
         imgWidth = image.getWidth();
         imgHeight = image.getHeight();
         imgPixels = new Matrix( imgWidth, imgHeight );
-        pictures = new Matrix[imgWidth];
+        pictures = new Matrix[imgHeight];
         
-        populateMatrixRGB();
+        populateMatrixRGBWithGray();
+        changeMatrixToDoubles();
         constructSVDMatrix();
+        convertMatricesBack();       
  
     }    
     
@@ -70,7 +72,8 @@ public class SVDImage {
     public void compareApproximation( int index ) {
         
         if ( index >= 0 && index < pictures.length ) {
-            BufferedImage image2 = new BufferedImage( imgWidth, imgHeight, BufferedImage.TYPE_BYTE_GRAY );
+            
+            BufferedImage image2 = new BufferedImage( imgWidth, imgHeight, BufferedImage.TYPE_INT_RGB );
             
             for ( int i = 0; i < imgWidth; i++ ) {
                 for ( int j = 0; j < imgHeight; j++ ) {
@@ -102,8 +105,9 @@ public class SVDImage {
 
         for ( int i = 0; i < imgHeight; i++ ) {
 
-            BufferedImage tempImg = new BufferedImage( imgWidth, imgHeight, BufferedImage.TYPE_BYTE_GRAY );
+            BufferedImage tempImg = new BufferedImage( imgWidth, imgHeight, BufferedImage.TYPE_INT_RGB );
             
+            // construct matrices into buffered images
             for ( int j = 0; j < imgWidth; j++ ) {
                 for ( int k = 0; k < imgHeight; k++ ) {
                     tempImg.setRGB( j, k, (int) pictures[i].get( j, k ) );
@@ -143,6 +147,27 @@ public class SVDImage {
     /*********************** private methods *********************/
     
     /**
+     * Change matrix elements to doubles.
+     * 
+     * ** Acknowledgement: 
+     *      Method from vipinkumar7 in their SVD -for -image project
+     */
+    private void changeMatrixToDoubles() {
+        
+        for (int row = 0; row < imgWidth; row++) {
+            for (int col = 0; col < imgHeight; col++) {
+                imgPixels.set( row, col, imgPixels.get( row, col) / 255.00 );
+            }
+        }
+        
+//        JFrame frame = new JFrame();
+//        frame.getContentPane().setLayout(new FlowLayout());
+//        frame.getContentPane().add(new JLabel(new ImageIcon( image )));
+//        frame.pack();
+//        frame.setVisible(true);
+    }
+    
+    /**
      * Populate the pictures array with each approximation using 
      * the singular values.
      */
@@ -164,6 +189,7 @@ public class SVDImage {
             Matrix matrixToAdd = newU.times(newV.transpose() );
             matrixToAdd = matrixToAdd.times( newS );
             
+            // construct next image from last
             if ( i == 0 ) {
                 pictures[i] = matrixToAdd;
             } else {
@@ -172,19 +198,84 @@ public class SVDImage {
               
         }
         
+//        JFrame frame = new JFrame();
+//        frame.getContentPane().setLayout(new FlowLayout());
+//        frame.getContentPane().add(new JLabel(new ImageIcon( image )));
+//        frame.pack();
+//        frame.setVisible(true);
+        
     }
     
     /**
-     * Fill the imgPixels matrix with RGB values from the 
-     * bufferedImage;
+     * Convert matrix values back to integers.
+     * 
+     * ** Acknowledgement: 
+     *      Method from vipinkumar7 in their SVD -for -image project
      */
-    private void populateMatrixRGB() {
+    private void convertMatricesBack() {
         
-        for ( int i = 0; i < imgWidth; i++ ) {
-            for ( int j = 0; j < imgHeight; j++ ) {
-                imgPixels.set( i, j, image.getRGB( i, j ) );
+        for ( int i = 0; i < pictures.length; i++ ) {
+            System.out.println( pictures[i] );
+            Matrix tempMatrix = pictures[i];
+            for (int row = 0; row < imgWidth; row++) {
+                for (int col = 0; col < imgHeight; col++) {
+                    tempMatrix.set( row,  col, (int) ( tempMatrix.get( row, col ) * 255.00 ) );
+                }
             }
-        }            
+        }
+        
+//        JFrame frame = new JFrame();
+//        frame.getContentPane().setLayout(new FlowLayout());
+//        frame.getContentPane().add(new JLabel(new ImageIcon( image )));
+//        frame.pack();
+//        frame.setVisible(true);
+
     }
+    
+    /**
+     * Fill the imgPixels matrix with RGB values explicitly
+     * converted to grayscale.
+     * 
+     * ** Acknowledgement: 
+     *      Method from vipinkumar7 in their SVD -for -image project
+     */
+    private void populateMatrixRGBWithGray() {
+        
+        for (int row = 0; row < imgWidth; row++) {
+            for (int col = 0; col < imgHeight; col++) {
+
+                int pixel = image.getRGB( row, col );
+
+                int R = (pixel >> 16) & 0x000000FF;
+                System.out.println( R );
+                int G = (pixel >> 8) & 0x000000FF;
+                System.out.println( G );
+                int B = (pixel) & 0x000000FF;
+                System.out.println( B );
+                
+                double Ga = 0.21 * R + 0.71 * G + 0.07 * B;
+                imgPixels.set( row, col, Ga );
+
+            }
+        }   
+        
+        BufferedImage tempImg = new BufferedImage( imgWidth, imgHeight, BufferedImage.TYPE_INT_RGB );
+        
+        // construct matrices into buffered images
+        for ( int j = 0; j < imgWidth; j++ ) {
+            for ( int k = 0; k < imgHeight; k++ ) {
+                tempImg.setRGB( j, k, (int) imgPixels.get( j, k ) );
+            }
+        }
+        
+        JFrame frame = new JFrame();
+        frame.getContentPane().setLayout(new FlowLayout());
+        frame.getContentPane().add(new JLabel(new ImageIcon( tempImg )));
+        frame.pack();
+        frame.setVisible(true);
+        
+    }
+    
+    
   
 }
