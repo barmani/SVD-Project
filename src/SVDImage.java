@@ -4,6 +4,8 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 
 import java.awt.image.BufferedImage;
+import java.awt.image.DataBuffer;
+import java.awt.image.Raster;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -58,9 +60,7 @@ public class SVDImage {
         pictures = new Matrix[imgHeight];
         
         populateMatrixRGBWithGray();
-        changeMatrixToDoubles();
-        constructSVDMatrix();
-        convertMatricesBack();       
+        constructSVDMatrix();      
         
     }    
     
@@ -111,7 +111,9 @@ public class SVDImage {
             // construct matrices into buffered images
             for ( int j = 0; j < imgWidth; j++ ) {
                 for ( int k = 0; k < imgHeight; k++ ) {
-                    tempImg.setRGB( j, k, (int) pictures[i].get( j, k ) );
+                    int pixel = (int) pictures[i].get( j, k );
+                    int newValue = ( pixel << 16 ) | ( pixel << 8 ) | pixel;
+                    tempImg.setRGB( j, k, newValue );
                 }
             }
             
@@ -148,28 +150,6 @@ public class SVDImage {
     /*********************** private methods *********************/
     
     /**
-     * Change matrix elements to doubles.
-     * 
-     * ** Acknowledgement: 
-     *      Method from vipinkumar7 in their SVD -for -image project
-     */
-    private void changeMatrixToDoubles() {
-        
-        for (int row = 0; row < imgWidth; row++) {
-            for (int col = 0; col < imgHeight; col++) {
-                imgPixels.set( row, col, imgPixels.get( row, col) / 255.00 );
-            }
-        }
-        
-//        JFrame frame = new JFrame();
-//        frame.getContentPane().setLayout(new FlowLayout());
-//        frame.getContentPane().add(new JLabel(new ImageIcon( image )));
-//        frame.pack();
-//        frame.setVisible(true);
-        
-    }
-    
-    /**
      * Populate the pictures array with each approximation using 
      * the singular values.
      */
@@ -200,91 +180,29 @@ public class SVDImage {
               
         }
         
-//        JFrame frame = new JFrame();
-//        frame.getContentPane().setLayout(new FlowLayout());
-//        frame.getContentPane().add(new JLabel(new ImageIcon( image )));
-//        frame.pack();
-//        frame.setVisible(true);
-        
-    }
-    
-    /**
-     * Convert matrix values back to integers.
-     * 
-     * ** Acknowledgement: 
-     *      Method from vipinkumar7 in their SVD -for -image project
-     */
-    private void convertMatricesBack() {
-        
-        for ( int i = 0; i < pictures.length; i++ ) {
-            Matrix tempMatrix = pictures[i];
-            for (int row = 0; row < imgWidth; row++) {
-                for (int col = 0; col < imgHeight; col++) {
-                    tempMatrix.set( row,  col, (int) ( tempMatrix.get( row, col ) * 255.00 ) );
-                }
-            }
-        }
-        
-//        JFrame frame = new JFrame();
-//        frame.getContentPane().setLayout(new FlowLayout());
-//        frame.getContentPane().add(new JLabel(new ImageIcon( image )));
-//        frame.pack();
-//        frame.setVisible(true);
-
     }
     
     /**
      * Fill the imgPixels matrix with RGB values explicitly
      * converted to grayscale.
-     * 
-     * ** Acknowledgement: 
-     *      Method from vipinkumar7 in their SVD -for -image project
      */
     private void populateMatrixRGBWithGray() {
-        
-        for (int row = 0; row < imgWidth; row++) {
-            for (int col = 0; col < imgHeight; col++) {
+          
+        for (int i = 0; i < imgWidth; i++) {
+            for (int j = 0; j < imgHeight; j++) {
 
-//                int pixel = image.getRGB( row, col );
-//
-//                int R = (pixel >> 16) & 0x000000FF;
-//                int G = (pixel >> 8) & 0x000000FF;
-//                int B = (pixel) & 0x000000FF;
-//                
-//                // luminosity method of conversion
-//                double gray =  0.2989 * R + 0.5870 * G + 0.1140 * B;
-//                // int newPixel = (gray<<16) | (gray<<8) | gray;
+                int pixel = image.getRGB( i, j );
+
+                int red = (pixel >> 16) & 0x000000FF;
+                int green = (pixel >> 8) & 0x000000FF;
+                int blue = (pixel) & 0x000000FF;
                 
-                // Remove the alpha component
-                Color c = new Color(image.getRGB(row, col) & 0x00ffffff);
-                // Normalize
-                int newRed = (int) (0.2989f * c.getRed());
-                int newGreen = (int) (0.5870f * c.getGreen());
-                int newBlue = (int) (0.1140f * c.getBlue());
-                int roOffset = newRed + newGreen + newBlue;
+                // matlab's method of conversion
+                double gray = 0.2989 * red + 0.5870 * green + 0.1140 * blue;
                 
-                imgPixels.set( row, col, roOffset );
+                imgPixels.set(  i, j, gray );
 
             }
-        }
-        
-        BufferedImage tempImg = new BufferedImage( imgWidth, imgHeight, BufferedImage.TYPE_INT_RGB );
-        
-        // construct matrices into buffered images
-        for ( int j = 0; j < imgWidth; j++ ) {
-            for ( int k = 0; k < imgHeight; k++ ) {
-                tempImg.setRGB( j, k, (int) imgPixels.get( j, k ) );
-            }
-        }
-        
-        JFrame frame = new JFrame();
-        frame.getContentPane().setLayout(new FlowLayout());
-        frame.getContentPane().add(new JLabel(new ImageIcon( tempImg )));
-        frame.pack();
-        frame.setVisible(true);
-        
+        }        
     }
-    
-    
-  
 }
