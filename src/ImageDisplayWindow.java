@@ -1,5 +1,3 @@
-import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.image.BufferedImage;
 
@@ -27,6 +25,7 @@ public class ImageDisplayWindow extends JFrame {
     
     private JButton browse;
     private JButton quit;
+    private JButton save;
         
     private JLabel countLabel;
     private JLabel titleLabel;
@@ -92,6 +91,20 @@ public class ImageDisplayWindow extends JFrame {
         
     }
     
+    public int getLabelTextAsInt() {
+        
+        int number = -1;
+        
+        try {
+            number = Integer.parseInt( countLabel.getText() );
+        } catch ( NumberFormatException e ) {
+            
+        }
+        
+        return number;
+        
+    }
+    
     /**
      * Set the slider and listener for the slider after the image has
      * been uploaded.
@@ -121,6 +134,17 @@ public class ImageDisplayWindow extends JFrame {
  
     }
     
+    /**
+     * Set save to enabled or disabled.
+     * 
+     * @param value enabled or disabled
+     */
+    public void toggleSave( boolean value ) {
+        
+        save.setEnabled( value );
+        
+    }
+    
     
     /***************************** private methods ***************************/
     
@@ -132,6 +156,7 @@ public class ImageDisplayWindow extends JFrame {
         
         buttons.add( browse );
         buttons.add( quit );
+        buttons.add( save );
         
         pictureWindow.add( scroller );
         
@@ -151,6 +176,8 @@ public class ImageDisplayWindow extends JFrame {
         
         browse = new JButton( "Browse Files" );
         quit = new JButton( "Quit" );
+        save = new JButton( "Save" );
+        save.setEnabled( false );
         
     }
     
@@ -200,6 +227,7 @@ public class ImageDisplayWindow extends JFrame {
         
         browse.addActionListener( listener );
         quit.addActionListener( listener );
+        save.addActionListener( listener );
         
     }
     

@@ -5,11 +5,13 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  * This class is the listener for the display window. It responds to
@@ -72,10 +74,38 @@ public class ImageDisplayListener implements ActionListener, ChangeListener {
             
             window.setSlider( 1, imgList.size(), 1 );
             window.setSize( image.getWidth() + 50, image.getHeight() + 140 );
+            window.toggleSave( true );
             window.revalidate();
             
             changeDisplayImage( 1 );
    
+        } else if ( button.getText().equals( "Save" ) ) {
+            
+            BufferedImage currentImg = imgList.get( window.getLabelTextAsInt() - 1 );
+            
+            if ( currentImg != null ) {
+                   
+                JFileChooser saver = new JFileChooser();
+                saver.setFileFilter( new FileNameExtensionFilter( "JPEG Image", "jpg" ) );
+                // Show the "Save" modal
+                int rVal = saver.showSaveDialog(window);
+                if (rVal == JFileChooser.APPROVE_OPTION) {
+                    
+                    File saveFile = saver.getSelectedFile();
+                    String path = saveFile.getAbsolutePath();
+                    if ( !path.endsWith(".jpg") ) {
+                        path += ".jpg";
+                    }
+                    try {
+                        ImageIO.write( currentImg, "jpg", new File(path) );
+                    } catch ( IOException exception ) {
+                        
+                    }
+                    
+                }
+                      
+            }
+            
         } else if ( button.getText().equals( "Quit" ) ) {
             
             System.exit( 0 );
@@ -94,6 +124,27 @@ public class ImageDisplayListener implements ActionListener, ChangeListener {
         return selectedFile;
         
     }
+    
+    /**
+     * Get a image in the list of buffered images.
+     * 
+     * @param which image to get
+     * @return the image
+     */
+    public BufferedImage getImageFromList( int which ) {
+        
+        BufferedImage imageToGet = null;
+        
+        if ( imgList != null && imgList.size() > 0 
+                && which >= 0 && which < imgList.size() ) {
+            
+            imageToGet = imgList.get( which );
+            
+        }
+        
+        return imageToGet;
+        
+    }
 
     /**
      * Respond to changes from the slider.
@@ -109,8 +160,7 @@ public class ImageDisplayListener implements ActionListener, ChangeListener {
         
         window.changeLabelText( "" + value );
         
-    }
-    
+    }   
     
     /************************** private methods **********************/
     

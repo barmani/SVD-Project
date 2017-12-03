@@ -26,7 +26,7 @@ public class SVDImage {
 
     private BufferedImage image;
     
-    private Matrix imgPixels;
+    private Matrix imgPixels;    
     
     private Matrix[] pictures;
     
@@ -45,8 +45,8 @@ public class SVDImage {
         
         Image preImage = ImageIO.read( file );
                 
-        image = new BufferedImage( preImage.getWidth(null), preImage.getHeight(null), BufferedImage.TYPE_BYTE_GRAY );
-
+        image = new BufferedImage( preImage.getWidth(null), preImage.getHeight(null), BufferedImage.TYPE_INT_RGB );
+        
         Graphics2D g = image.createGraphics();
         g.drawImage(preImage, 0, 0, null);
         g.dispose();       
@@ -54,11 +54,11 @@ public class SVDImage {
         imgWidth = image.getWidth();
         imgHeight = image.getHeight();
         imgPixels = new Matrix( imgWidth, imgHeight );
-        pictures = new Matrix[imgWidth];
+        pictures = new Matrix[imgHeight];
         
-        populateMatrixRGB();
-        constructSVDMatrix();
- 
+        populateMatrixRGBWithGray();
+        constructSVDMatrix();      
+        
     }    
     
     /**
@@ -70,7 +70,8 @@ public class SVDImage {
     public void compareApproximation( int index ) {
         
         if ( index >= 0 && index < pictures.length ) {
-            BufferedImage image2 = new BufferedImage( imgWidth, imgHeight, BufferedImage.TYPE_BYTE_GRAY );
+            
+            BufferedImage image2 = new BufferedImage( imgWidth, imgHeight, BufferedImage.TYPE_INT_RGB );
             
             for ( int i = 0; i < imgWidth; i++ ) {
                 for ( int j = 0; j < imgHeight; j++ ) {
@@ -102,11 +103,14 @@ public class SVDImage {
 
         for ( int i = 0; i < imgHeight; i++ ) {
 
-            BufferedImage tempImg = new BufferedImage( imgWidth, imgHeight, BufferedImage.TYPE_BYTE_GRAY );
+            BufferedImage tempImg = new BufferedImage( imgWidth, imgHeight, BufferedImage.TYPE_INT_RGB );
             
+            // construct matrices into buffered images
             for ( int j = 0; j < imgWidth; j++ ) {
                 for ( int k = 0; k < imgHeight; k++ ) {
-                    tempImg.setRGB( j, k, (int) pictures[i].get( j, k ) );
+                    int pixel = (int) pictures[i].get( j, k );
+                    int newValue = ( pixel << 16 ) | ( pixel << 8 ) | pixel;
+                    tempImg.setRGB( j, k, newValue );
                 }
             }
             
@@ -164,6 +168,7 @@ public class SVDImage {
             Matrix matrixToAdd = newU.times(newV.transpose() );
             matrixToAdd = matrixToAdd.times( newS );
             
+            // construct next image from last
             if ( i == 0 ) {
                 pictures[i] = matrixToAdd;
             } else {
@@ -175,16 +180,26 @@ public class SVDImage {
     }
     
     /**
-     * Fill the imgPixels matrix with RGB values from the 
-     * bufferedImage;
+     * Fill the imgPixels matrix with RGB values explicitly
+     * converted to grayscale.
      */
-    private void populateMatrixRGB() {
-        
-        for ( int i = 0; i < imgWidth; i++ ) {
-            for ( int j = 0; j < imgHeight; j++ ) {
-                imgPixels.set( i, j, image.getRGB( i, j ) );
+    private void populateMatrixRGBWithGray() {
+          
+        for (int i = 0; i < imgWidth; i++) {
+            for (int j = 0; j < imgHeight; j++) {
+
+                int pixel = image.getRGB( i, j );
+
+                int red = (pixel >> 16) & 0x000000FF;
+                int green = (pixel >> 8) & 0x000000FF;
+                int blue = (pixel) & 0x000000FF;
+                
+                // matlab's method of conversion
+                double gray = 0.2989 * red + 0.5870 * green + 0.1140 * blue;
+                
+                imgPixels.set(  i, j, gray );
+
             }
-        }            
+        }        
     }
-  
 }
