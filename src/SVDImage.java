@@ -108,7 +108,11 @@ public class SVDImage {
             // construct matrices into buffered images
             for ( int j = 0; j < imgWidth; j++ ) {
                 for ( int k = 0; k < imgHeight; k++ ) {
+                    
                     int pixel = (int) pictures[i].get( j, k );
+                    if ( pixel < 0 ) {
+                        pixel *= -1;
+                    }
                     int newValue = ( pixel << 16 ) | ( pixel << 8 ) | pixel;
                     tempImg.setRGB( j, k, newValue );
                 }
@@ -197,6 +201,12 @@ public class SVDImage {
                 // matlab's method of conversion
                 double gray = 0.2989 * red + 0.5870 * green + 0.1140 * blue;
                 
+                // avoid clusters of discolored pixels
+                if ( gray >= 240 ) {
+                    gray -= 25;
+                } else if ( gray <= 15 ) {
+                    gray += 25;
+                }
                 imgPixels.set(  i, j, gray );
 
             }
