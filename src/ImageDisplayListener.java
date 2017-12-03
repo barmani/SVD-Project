@@ -17,6 +17,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  * This class is the listener for the display window. It responds to
@@ -89,17 +90,26 @@ public class ImageDisplayListener implements ActionListener, ChangeListener {
             BufferedImage currentImg = imgList.get( window.getLabelTextAsInt() - 1 );
             
             if ( currentImg != null ) {
-                
-                try {
+                   
+                JFileChooser saver = new JFileChooser();
+                saver.setFileFilter( new FileNameExtensionFilter( "JPEG Image", "jpg" ) );
+                // Show the "Save" modal
+                int rVal = saver.showSaveDialog(window);
+                if (rVal == JFileChooser.APPROVE_OPTION) {
                     
-                    File saveFile = new File( "filename" );
-                    JFileChooser saveChooser = new JFileChooser("C:/Users/brendanarmani/documents");  
-                    saveChooser.setSelectedFile(saveFile);   
-                    ImageIO.write( currentImg, "jpg", saveChooser.getSelectedFile() );
-
-                } catch ( IOException exception ) {
+                    File saveFile = saver.getSelectedFile();
+                    String path = saveFile.getAbsolutePath();
+                    if ( !path.endsWith(".jpg") ) {
+                        path += ".jpg";
+                    }
+                    try {
+                        ImageIO.write( currentImg, "jpg", new File(path) );
+                    } catch ( IOException exception ) {
+                        
+                    }
                     
                 }
+                      
             }
             
         } else if ( button.getText().equals( "Quit" ) ) {
