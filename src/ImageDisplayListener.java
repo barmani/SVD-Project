@@ -75,8 +75,8 @@ public class ImageDisplayListener implements ActionListener, ChangeListener {
                 imgList = image.getImageList();       
                 
                 window.setSlider( 1, imgList.size(), 1 );
-                window.setSize( image.getWidth() + 50, image.getHeight() + 140 );
-                window.toggleSave( true );
+                window.setSize( image.getWidth() + 250, image.getHeight() + 135 );
+                window.toggleSaveAndCompare( true );
                 window.revalidate();
                 
                 changeDisplayImage( 1 );
@@ -85,9 +85,9 @@ public class ImageDisplayListener implements ActionListener, ChangeListener {
    
         } else if ( button.getText().equals( "Compare to Original" ) ) {
             
-            int index = window.getLabelTextAsInt() - 1;
+            BufferedImage img = getImageFromList( window.getLabelTextAsInt() - 1 );
             
-            image.compareApproximation( index );
+            image.compareApproximation( img );
                 
         } else if ( button.getText().equals( "Save" ) ) {
             
