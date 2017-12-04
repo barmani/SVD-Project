@@ -24,6 +24,7 @@ public class ImageDisplayWindow extends JFrame {
     private ImageDisplayListener listener;
     
     private JButton browse;
+    private JButton compare;
     private JButton quit;
     private JButton save;
         
@@ -139,9 +140,10 @@ public class ImageDisplayWindow extends JFrame {
      * 
      * @param value enabled or disabled
      */
-    public void toggleSave( boolean value ) {
+    public void toggleSaveAndCompare( boolean value ) {
         
         save.setEnabled( value );
+        compare.setEnabled( value );
         
     }
     
@@ -155,8 +157,9 @@ public class ImageDisplayWindow extends JFrame {
     private void buildContent() {
         
         buttons.add( browse );
-        buttons.add( quit );
+        buttons.add( compare );
         buttons.add( save );
+        buttons.add( quit );
         
         pictureWindow.add( scroller );
         
@@ -175,8 +178,10 @@ public class ImageDisplayWindow extends JFrame {
     private void setButtons() {
         
         browse = new JButton( "Browse Files" );
+        compare = new JButton( "Compare to Original" );
         quit = new JButton( "Quit" );
         save = new JButton( "Save" );
+        compare.setEnabled( false );
         save.setEnabled( false );
         
     }
@@ -226,6 +231,7 @@ public class ImageDisplayWindow extends JFrame {
         listener = new ImageDisplayListener(this);
         
         browse.addActionListener( listener );
+        compare.addActionListener( listener );
         quit.addActionListener( listener );
         save.addActionListener( listener );
         
