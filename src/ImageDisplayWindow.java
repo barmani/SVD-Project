@@ -140,9 +140,10 @@ public class ImageDisplayWindow extends JFrame {
      * 
      * @param value enabled or disabled
      */
-    public void toggleSave( boolean value ) {
+    public void toggleSaveAndCompare( boolean value ) {
         
         save.setEnabled( value );
+        compare.setEnabled( value );
         
     }
     
@@ -180,6 +181,7 @@ public class ImageDisplayWindow extends JFrame {
         compare = new JButton( "Compare to Original" );
         quit = new JButton( "Quit" );
         save = new JButton( "Save" );
+        compare.setEnabled( false );
         save.setEnabled( false );
         
     }
