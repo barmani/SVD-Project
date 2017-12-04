@@ -1,4 +1,3 @@
-import java.awt.FlowLayout;
 import java.awt.Graphics2D;
 import java.awt.Image;
 
@@ -8,9 +7,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 import Jama.Matrix;
 
@@ -63,17 +64,34 @@ public class SVDImage {
     
     /**
      * Compare a specific singular value picture with the 
-     * original picture.
+     * original picture in a separate frame.
      * 
      * @param index the index of pictures the user wants to draw
      */
     public void compareApproximation( BufferedImage image2 ) {
         
-        // draw the image
+        JLabel pic1 = new JLabel( new ImageIcon( image ) );
+        JLabel pic2 = new JLabel( new ImageIcon( image2 ) ); 
+        JLabel pic1Label = new JLabel( "Original" );
+        JLabel pic2Label = new JLabel ( "Current Image" );
+        
+        JPanel appWindow = new JPanel();
+        JPanel panel1 = new JPanel();
+        JPanel panel2 = new JPanel();
+        
+        appWindow.setLayout( new BoxLayout( appWindow, BoxLayout.X_AXIS ) );
+        panel1.setLayout( new BoxLayout( panel1, BoxLayout.Y_AXIS ) );
+        panel2.setLayout( new BoxLayout( panel2, BoxLayout.Y_AXIS ) );
+        
+        panel1.add( pic1 );
+        panel1.add( pic1Label );
+        panel2.add( pic2 );
+        panel2.add( pic2Label );
+        appWindow.add( panel1 );
+        appWindow.add( panel2 );
+           
         JFrame frame = new JFrame();
-        frame.getContentPane().setLayout( new FlowLayout() );
-        frame.getContentPane().add( new JLabel( new ImageIcon( image ) ) );
-        frame.getContentPane().add( new JLabel( new ImageIcon( image2 ) ) );
+        frame.setContentPane( appWindow );
         frame.pack();
         frame.setVisible( true );
             
