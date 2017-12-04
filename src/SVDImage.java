@@ -207,6 +207,7 @@ public class SVDImage {
                 } else if ( gray <= 15 ) {
                     gray += 25;
                 }
+                
                 imgPixels.set(  i, j, gray );
 
             }

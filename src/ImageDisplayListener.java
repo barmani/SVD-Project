@@ -61,24 +61,34 @@ public class ImageDisplayListener implements ActionListener, ChangeListener {
             chooser.showOpenDialog( window );
             selectedFile = chooser.getSelectedFile();
             
-            // produce list of images, create the slider, initialize it to the first image
-            try {
+            if ( selectedFile != null && selectedFile.exists() ) {
                 
-                image = new SVDImage( selectedFile );
+                // produce list of images, create the slider, initialize it to the first image
+                try {
+                    
+                    image = new SVDImage( selectedFile );
+                    
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
                 
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
-            
-            imgList = image.getImageList();       
-            
-            window.setSlider( 1, imgList.size(), 1 );
-            window.setSize( image.getWidth() + 50, image.getHeight() + 140 );
-            window.toggleSave( true );
-            window.revalidate();
-            
-            changeDisplayImage( 1 );
+                imgList = image.getImageList();       
+                
+                window.setSlider( 1, imgList.size(), 1 );
+                window.setSize( image.getWidth() + 50, image.getHeight() + 140 );
+                window.toggleSave( true );
+                window.revalidate();
+                
+                changeDisplayImage( 1 );
+                
+            }      
    
+        } else if ( button.getText().equals( "Compare to Original" ) ) {
+            
+            int index = window.getLabelTextAsInt() - 1;
+            
+            image.compareApproximation( index );
+                
         } else if ( button.getText().equals( "Save" ) ) {
             
             BufferedImage currentImg = imgList.get( window.getLabelTextAsInt() - 1 );
